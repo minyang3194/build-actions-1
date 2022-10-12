@@ -16,7 +16,7 @@ on:
     branches:
       - main
     paths:
-      - 'build/Lede_source/start-up/start'
+      - 'config'
 
 env:
   Github: https://github.com/${{github.repository}}
@@ -34,7 +34,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    if: github.event.repository.owner.id == github.event.sender.id
+    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
 
     name: 编译 "${{matrix.target}}"
     strategy:
@@ -46,7 +46,7 @@ jobs:
 
     steps:
     - name: 准备结束
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: 读取脚本设置
       run: |
