@@ -34,8 +34,8 @@ on:
 
 
 # 定时触发开启开始编译(把下面两个#去掉开启,时间设置请看定时开启编译说明)
-  schedule:
-   - cron: 0 9 * * *
+#  schedule:
+#   - cron: 30 8 * * *
 
 env:
   Github: https://github.com/${{github.repository}}
@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_source,Lienol_source]
+        target: [Lede_source]
 
         # [Lede_source,Lienol_source,Mortal_source,Tianling_source,openwrt_amlogic]
 
@@ -124,7 +124,7 @@ jobs:
         
     - name: SSH远程连接（制作.config配置文件）
       if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh')
-      uses: danshui-git/debugger-action@master
+      uses: danshui-git/debugger-action@main
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -202,12 +202,12 @@ jobs:
       with:
           token: ${{ secrets.REPO_TOKEN }}
           repository: ${{ github.repository }}
-          keep_minimum_runs: 0
           retain_days: ${{ env.retain_days }}
+          keep_minimum_runs: 0
     
     - name: 删除releases
       if: env.REPO_TOKEN
-      uses: dev-drprasad/delete-older-releases@v0.2.0
+      uses: danshui-git/delete-older-releases@main
       with:
         repo: ${{ github.repository }}
         keep_latest: ${{ env.keep_latest }}
