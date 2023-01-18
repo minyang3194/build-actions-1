@@ -8,13 +8,13 @@
 
 
 cat >$NETIP <<-EOF
-uci set network.lan.ipaddr='192.168.2.2'                      # IPv4 地址(openwrt后台地址)
+uci set network.lan.ipaddr='192.168.2.99'                     # IPv4 地址(openwrt后台地址)
 uci set network.lan.netmask='255.255.255.0'                   # IPv4 子网掩码
 #uci set network.lan.gateway='192.168.2.1'                    # 旁路由设置 IPv4 网关（去掉uci前面的#生效）
 #uci set network.lan.broadcast='192.168.2.255'                # 旁路由设置 IPv4 广播（去掉uci前面的#生效）
 #uci set network.lan.dns='223.5.5.5 114.114.114.114'          # 旁路由设置 DNS(多个DNS要用空格分开)（去掉uci前面的#生效）
-uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理(若用IPV6请把'0'改'1')
-uci set dhcp.@dnsmasq[0].filter_aaaa='1'                      # 禁止解析 IPv6 DNS记录(若用IPV6请把'1'改'0')
+uci set network.lan.delegate='1'                              # 去掉LAN口使用内置的 IPv6 管理(若用IPV6请把'0'改'1')
+uci set dhcp.@dnsmasq[0].filter_aaaa='0'                      # 禁止解析 IPv6 DNS记录(若用IPV6请把'1'改'0')
 
 #uci set dhcp.lan.ignore='1'                                  # 旁路由关闭DHCP功能（去掉uci前面的#生效）
 #uci delete network.lan.type                                  # 旁路由去掉桥接模式（去掉uci前面的#生效）
@@ -22,12 +22,12 @@ uci set system.@system[0].hostname='OpenWrt-123'              # 修改主机名�
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）
 
 # 如果有用IPV6的话,可以使用以下命令创建IPV6客户端(LAN口)（去掉全部代码uci前面#号生效）
-#uci set network.ipv6=interface
-#uci set network.ipv6.proto='dhcpv6'
-#uci set network.ipv6.ifname='@lan'
-#uci set network.ipv6.reqaddress='try'
-#uci set network.ipv6.reqprefix='auto'
-#uci set firewall.@zone[0].network='lan ipv6'
+uci set network.ipv6=interface
+uci set network.ipv6.proto='dhcpv6'
+uci set network.ipv6.ifname='@lan'
+uci set network.ipv6.reqaddress='try'
+uci set network.ipv6.reqprefix='auto'
+uci set firewall.@zone[0].network='lan ipv6'
 EOF
 
 
@@ -79,9 +79,5 @@ cat >"$CLEAR_PATH" <<-EOF
 packages
 config.buildinfo
 feeds.buildinfo
-openwrt-x86-64-generic-kernel.bin
-openwrt-x86-64-generic.manifest
-openwrt-x86-64-generic-squashfs-rootfs.img.gz
-sha256sums
 version.buildinfo
 EOF
